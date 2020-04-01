@@ -92,7 +92,11 @@ open class AboutScreen: UITableViewController {
         }
 
         cell.textLabel?.text = item.title
-        cell.accessoryType = .disclosureIndicator
+
+        if item.callback != nil {
+            cell.accessoryType = .disclosureIndicator
+        }
+        
         cell.selectionStyle = .none
 
         return cell

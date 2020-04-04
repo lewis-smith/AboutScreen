@@ -89,6 +89,9 @@ open class AboutScreen: UITableViewController {
 
         if let image = UIImage.from(symbolOrName: item.imageName) {
             cell.imageView?.image = image
+
+            cell.imageView?.image = cell.imageView?.image?.withRenderingMode(.alwaysTemplate)
+            cell.imageView?.tintColor = view.tintColor
         }
 
         cell.textLabel?.text = item.title

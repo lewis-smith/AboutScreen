@@ -1,4 +1,6 @@
 import UIKit
+import SafariServices
+import SFRoundedUtils
 
 @IBDesignable
 open class AboutScreen: UITableViewController {
@@ -49,11 +51,13 @@ open class AboutScreen: UITableViewController {
         stack.axis = .vertical
         stack.alignment = .center
         stack.spacing = 4
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.isLayoutMarginsRelativeArrangement = true
+        if #available(iOS 11.0, *) {
+            stack.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 32, trailing: 16)
+        }
 
-        let spacer = UIView()
-        stack.addArrangedSubview(spacer)
-        spacer.addConstraint(NSLayoutConstraint(item: spacer, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 8))
-
+        stack.addConstraint(NSLayoutConstraint(item: stack, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 0, constant: tableView.frame.width))
 
         if let image = UIImage.from(symbolOrName: header.imageName) {
             let imageView = UIImageView(image: image)
@@ -61,12 +65,11 @@ open class AboutScreen: UITableViewController {
             stack.addArrangedSubview(imageView)
             imageView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 80))
             imageView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .width, relatedBy: .equal, toItem: imageView, attribute: .height, multiplier: 1, constant: 0))
-
         }
 
         let title = UILabel()
         title.text = header.title
-        title.font = UIFont.systemFont(ofSize: UIFont.systemFontSize * 1.6, weight: .black)
+        title.font = UIFont.systemFont(ofSize: UIFont.systemFontSize * 1.6, weight: .black).rounded()
         stack.addArrangedSubview(title)
 
         let version = UILabel()
@@ -74,11 +77,28 @@ open class AboutScreen: UITableViewController {
         version.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize, weight: .light)
         stack.addArrangedSubview(version)
 
-        let spacer2 = UIView()
-        stack.addArrangedSubview(spacer2)
-        spacer2.addConstraint(NSLayoutConstraint(item: spacer2, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 8))
+        let bodyStack = UIStackView()
+        bodyStack.axis = .vertical
+        bodyStack.alignment = .center
+        bodyStack.spacing = 16
 
+        if let tagline = header.tagline {
+            let tagLineLabel = UILabel()
+            tagLineLabel.text = tagline
+            tagLineLabel.font = UIFont.systemFont(ofSize: UIFont.labelFontSize * 0.8, weight: .light)
+            bodyStack.addArrangedSubview(tagLineLabel)
+        }
 
+        if let message = header.message {
+            let messageLabel = UILabel()
+            messageLabel.text = message
+            messageLabel.numberOfLines = 0
+            messageLabel.textAlignment = .center
+            messageLabel.font = UIFont.systemFont(ofSize: UIFont.labelFontSize * 0.8)
+            bodyStack.addArrangedSubview(messageLabel)
+        }
+
+        stack.addArrangedSubview(bodyStack)
         return stack
     }
     
@@ -111,6 +131,11 @@ open class AboutScreen: UITableViewController {
         }
 
         callback()
+    }
+
+    public func present(url: URL) {
+        let sfvc = SFSafariViewController(url: url)
+        present(sfvc, animated: true, completion: nil)
     }
 }
 

@@ -19,7 +19,8 @@ class ViewController: AboutScreen {
         let content = Content(header: Header(imageName: "clock", title: "Analog", version: "v2020.1 TF"),
                               sections: [
                                 Section(items: [
-                                    Item(imageName: "pencil", title: "Pencil", callback: {
+                                Item(imageName: "pencil", // this will look for an SF Symbol, if it doesn't find one it will look for an `imagedNamed:`  
+                                    title: "Pencil", callback: {
                                         print("pencil tapped")
                                     })
                                 ])

@@ -14,7 +14,4 @@ extension Item {
         return item
     }
 
-    public static func moreAppsByLewis() -> UrlItem {
-        return UrlItem(imageName: "app.badge", title: "More Apps by Lewis", url: URL(string: "https://apps.apple.com/us/developer/lasmit-tlb-ltd/id535281397")!)
-    }
 }

@@ -1,6 +1,5 @@
 import UIKit
 import SafariServices
-import SFRoundedUtils
 
 @IBDesignable
 open class AboutScreen: UITableViewController {
